@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-gradient-to-t from-backgroundColor1 to-primaryColor">
+      <body className="flex min-h-screen bg-gradient-to-t from-backgroundColor1 to-primaryColor">
         {children}
       </body>
     </html>

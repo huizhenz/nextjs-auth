@@ -1,5 +1,6 @@
 "use client";
 
+// React
 import * as React from "react";
 
 // shadcn
@@ -31,15 +32,25 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "@/components/ui/use-toast";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 // zod & react-hook-form & userSchema
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { userSchema } from "@/validators/auth";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+// Next.js Image Component
 import Image from "next/image";
-import { toast } from "@/components/ui/use-toast";
+
+// react-icons
+import { FaRegAddressCard } from "react-icons/fa";
+import { LuMail } from "react-icons/lu";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { LuUsers2 } from "react-icons/lu";
+import Link from "next/link";
 
 type userType = z.infer<typeof userSchema>;
 
@@ -57,21 +68,46 @@ export default function Home() {
   });
 
   const onSubmit = (data: userType) => {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    const { password, confirmPassword } = data;
+
+    if (password !== confirmPassword) {
+      toast({
+        title: "비밀번호가 일치하지 않습니다.",
+        variant: "destructive",
+        duration: 1000,
+      });
+      return;
+    }
+    alert(JSON.stringify(data, null, 4));
+    // toast({
+    //   title: "You submitted the following values:",
+    //   description: (
+    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+    //     </pre>
+    //   ),
+    // });
+  };
+
+  const onClick = () => {
+    form.trigger(["username", "email", "sex", "terms"]);
+
+    const usernameState = form.getFieldState("username");
+    const emailState = form.getFieldState("email");
+    const sexState = form.getFieldState("sex");
+    const termsState = form.getFieldState("terms");
+
+    if (!usernameState.isDirty || usernameState.invalid) return;
+    if (!emailState.isDirty || emailState.invalid) return;
+    if (!sexState.isDirty || sexState.invalid) return;
+    if (!termsState.invalid) return;
   };
 
   console.log(form.watch());
 
   return (
-    <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-      <Card className="w-[450px]">
+    <div className="my-16 mx-auto">
+      <Card className="w-[480px]">
         <CardHeader>
           {/* 이미지를 가운데 배치하기 위해 부모 요소에 css */}
           <div className="flex justify-center">
@@ -86,7 +122,7 @@ export default function Home() {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className=" space-y-6"
+                className="space-y-7"
               >
                 <FormField
                   control={form.control}
@@ -94,9 +130,12 @@ export default function Home() {
                   render={({ field }) => (
                     <FormItem>
                       <FormMessage />
-                      <FormControl>
-                        <Input placeholder="이름" {...field} />
-                      </FormControl>
+                      <div className="flex items-center">
+                        <FaRegAddressCard size="31" className="mr-4" />
+                        <FormControl>
+                          <Input placeholder="이름" {...field} />
+                        </FormControl>
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -107,9 +146,12 @@ export default function Home() {
                   render={({ field }) => (
                     <FormItem>
                       <FormMessage />
-                      <FormControl>
-                        <Input placeholder="이메일" {...field} />
-                      </FormControl>
+                      <div className="flex items-center">
+                        <LuMail size="31" className="mr-4" />
+                        <FormControl>
+                          <Input placeholder="이메일" {...field} />
+                        </FormControl>
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -120,15 +162,18 @@ export default function Home() {
                   render={({ field }) => (
                     <FormItem>
                       <FormMessage />
-                      <FormControl>
-                        {/* 비밀번호 type 설정 필수, input에다가 */}
-                        <Input
-                          placeholder="비밀번호"
-                          type={"password"}
-                          {...field}
-                        />
-                      </FormControl>
-                      <div className="text-xs pl-1">
+                      <div className="flex items-center">
+                        <RiLockPasswordLine size="31" className="mr-4" />
+                        <FormControl>
+                          {/* 비밀번호 type 설정 필수, input에다가 */}
+                          <Input
+                            placeholder="비밀번호"
+                            type={"password"}
+                            {...field}
+                          />
+                        </FormControl>
+                      </div>
+                      <div className="text-xs pl-12">
                         영문, 숫자, 특수문자(!@$%&*?) 조합 8~15자리
                       </div>
                     </FormItem>
@@ -140,14 +185,17 @@ export default function Home() {
                   name="confirmPassword"
                   render={({ field }) => (
                     <FormItem>
-                      <FormMessage />
-                      <FormControl>
-                        <Input
-                          placeholder="비밀번호 확인"
-                          type={"password"}
-                          {...field}
-                        />
-                      </FormControl>
+                      <FormMessage />{" "}
+                      <div className="flex items-center">
+                        <RiLockPasswordFill size="30" className="mr-4" />
+                        <FormControl>
+                          <Input
+                            placeholder="비밀번호 확인"
+                            type={"password"}
+                            {...field}
+                          />
+                        </FormControl>
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -158,36 +206,42 @@ export default function Home() {
                   name="sex"
                   render={({ field }) => (
                     <FormItem className="space-y-1.5">
-                      <FormLabel>성별</FormLabel>
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          className="flex space-x-6 space-y-1.5 "
-                        >
-                          <FormItem className="flex items-center space-x-2 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="male" />
-                            </FormControl>
-                            <FormLabel className="font-normal">남자</FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-2 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="female" />
-                            </FormControl>
-                            <FormLabel className="font-normal">여자</FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-2 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="none" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              선택 안함
-                            </FormLabel>
-                          </FormItem>
-                        </RadioGroup>
-                      </FormControl>
                       <FormMessage />
+                      <div className="flex items-center">
+                        <LuUsers2 size="31" className="mr-4" />
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="flex space-x-6 "
+                          >
+                            <FormItem className="flex items-center space-x-2 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="male" />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                남자
+                              </FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center space-x-2 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="female" />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                여자
+                              </FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-center space-x-2 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem value="none" />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                선택 안함
+                              </FormLabel>
+                            </FormItem>
+                          </RadioGroup>
+                        </FormControl>
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -197,7 +251,7 @@ export default function Home() {
                   control={form.control}
                   name="terms"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                    <FormItem className="flex flex-row items-start space-x-4 space-y-0 rounded-md border p-3 shadow">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
@@ -206,25 +260,39 @@ export default function Home() {
                       </FormControl>
                       <div className="space-y-1 leading-none">
                         <FormLabel>
-                          이용약관 및 개인정보 처리방침에 동의합니다.
+                          <Link
+                            href="https://naver.com"
+                            className="font-semibold underline"
+                          >
+                            이용약관
+                          </Link>
+                          &nbsp;및{" "}
+                          <Link
+                            href="https://naver.com"
+                            className="font-semibold underline"
+                          >
+                            개인정보 처리방침
+                          </Link>
+                          에 동의합니다.
                         </FormLabel>
-                        {/* <FormDescription>
-                  You can manage your mobile notifications in the{" "}
-                  <Link href="/examples/forms">mobile settings</Link> page.
-                </FormDescription> */}
                       </div>
                     </FormItem>
                   )}
                 />
 
-                {/* <div className="flex justify-center items-center space-x-1.5"> </div> */}
-
                 <CardFooter className="flex justify-center">
-                  <Button type="submit">가입하기</Button>
+                  <Button type="submit" onClick={onClick}>
+                    가입하기
+                  </Button>
                 </CardFooter>
               </form>
             </Form>
-            <div className="text-center">이미 회원이신가요? 로그인</div>
+            <div className="text-base text-center">
+              이미 회원이신가요?{" "}
+              <Link href="/login" className="text-primaryColor font-extrabold">
+                로그인
+              </Link>
+            </div>
           </CardContent>
         </div>
       </Card>

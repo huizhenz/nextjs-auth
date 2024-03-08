@@ -20,7 +20,9 @@ const config = {
     extend: {
       colors: {
         primaryColor: "var(--primaryColor)",
+        primaryHover: "var(--primaryHover)",
         backgroundColor1: "var(--backgroundColor1)",
+        gray1: "var(--gray1)",
 
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -74,6 +76,9 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      fontFamily: {
+        Pretendard: ["Pretendard-Regular"],
       },
     },
   },
