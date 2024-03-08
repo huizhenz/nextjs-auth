@@ -29,11 +29,11 @@ const buttonVariants = cva(
         icon: "h-10 w-10",
       },
       font: {
-        default: "text-sm font-bold", // 기본 14px
-        xs: "text-xs font-bold", // 12px
-        base: "text-base font-bold", // 16px
-        lg: "text-lg font-bold", // 18px
-        xl: "text-xl font-bold", // 20px
+        default: "text-sm font-semibold", // 기본 14px
+        xs: "text-xs font-semibold", // 12px
+        base: "text-base font-semibold", // 16px
+        lg: "text-lg font-semibold", // 18px
+        xl: "text-xl font-semibold", // 20px
       },
     },
     defaultVariants: {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="flex min-h-screen bg-gradient-to-t from-backgroundColor1 to-primaryColor">
         {children}
+        <Toaster />
       </body>
     </html>
   );
