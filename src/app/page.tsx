@@ -39,6 +39,7 @@ import { z } from "zod";
 import { userSchema } from "@/validators/auth";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Image from "next/image";
+import { toast } from "@/components/ui/use-toast";
 
 type userType = z.infer<typeof userSchema>;
 
@@ -55,11 +56,22 @@ export default function Home() {
     },
   });
 
+  const onSubmit = (data: userType) => {
+    toast({
+      title: "You submitted the following values:",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
+    });
+  };
+
   console.log(form.watch());
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-      <Card className="w-[350px]">
+      <Card className="w-[450px]">
         <CardHeader>
           {/* 이미지를 가운데 배치하기 위해 부모 요소에 css */}
           <div className="flex justify-center">
@@ -72,7 +84,10 @@ export default function Home() {
         <div className="grid w-full items-center gap-4">
           <CardContent>
             <Form {...form}>
-              <form className=" space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className=" space-y-6"
+              >
                 <FormField
                   control={form.control}
                   name="username"
@@ -133,30 +148,39 @@ export default function Home() {
                   )}
                 />
 
+                {/* Radio Group */}
                 <FormField
                   control={form.control}
                   name="sex"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="space-y-1.5">
                       <FormLabel>성별</FormLabel>
-
                       <FormControl>
                         <RadioGroup
-                          className="flex space-x-5"
-                          defaultValue="comfortable"
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex space-x-6 space-y-1.5 "
                         >
-                          <div className="flex items-center space-x-1.5">
-                            <RadioGroupItem value="default" id="r1" />
-                            <Label htmlFor="r1">남자</Label>
-                          </div>
-                          <div className="flex items-center space-x-1.5">
-                            <RadioGroupItem value="comfortable" id="r2" />
-                            <Label htmlFor="r2">여자</Label>
-                          </div>
-                          <div className="flex items-center space-x-1.5">
-                            <RadioGroupItem value="compact" id="r3" />
-                            <Label htmlFor="r3">선택 안함</Label>
-                          </div>
+                          <FormItem className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="male" />
+                            </FormControl>
+                            <FormLabel className="font-normal">남자</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="female" />
+                            </FormControl>
+                            <FormLabel className="font-normal">여자</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="none" />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              선택 안함
+                            </FormLabel>
+                          </FormItem>
                         </RadioGroup>
                       </FormControl>
                       <FormMessage />
@@ -164,15 +188,32 @@ export default function Home() {
                   )}
                 />
 
-                <div className="flex justify-center items-center space-x-1.5">
-                  <Checkbox id="terms" />
-                  <label
-                    htmlFor="terms"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    이용약관 및 개인정보 처리방침에 동의합니다.
-                  </label>
-                </div>
+                {/* Check Box */}
+                <FormField
+                  control={form.control}
+                  name="terms"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel>
+                          이용약관 및 개인정보 처리방침에 동의합니다.
+                        </FormLabel>
+                        {/* <FormDescription>
+                  You can manage your mobile notifications in the{" "}
+                  <Link href="/examples/forms">mobile settings</Link> page.
+                </FormDescription> */}
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                {/* <div className="flex justify-center items-center space-x-1.5"> </div> */}
 
                 <CardFooter className="flex justify-center">
                   <Button type="submit">가입하기</Button>
