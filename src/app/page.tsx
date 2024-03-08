@@ -93,11 +93,10 @@ export default function Home() {
                   name="username"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>이름</FormLabel>
-                      <FormControl>
-                        <Input placeholder="홍길동" {...field} />
-                      </FormControl>
                       <FormMessage />
+                      <FormControl>
+                        <Input placeholder="이름" {...field} />
+                      </FormControl>
                     </FormItem>
                   )}
                 />
@@ -107,11 +106,10 @@ export default function Home() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>이메일</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
                       <FormMessage />
+                      <FormControl>
+                        <Input placeholder="이메일" {...field} />
+                      </FormControl>
                     </FormItem>
                   )}
                 />
@@ -121,15 +119,18 @@ export default function Home() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>비밀번호</FormLabel>
-                      <div className="text-xs">
-                        영문, 숫자, 특수문자(!@$%&*?) 조합 8~15자리
-                      </div>
+                      <FormMessage />
                       <FormControl>
                         {/* 비밀번호 type 설정 필수, input에다가 */}
-                        <Input type={"password"} {...field} />
+                        <Input
+                          placeholder="비밀번호"
+                          type={"password"}
+                          {...field}
+                        />
                       </FormControl>
-                      <FormMessage />
+                      <div className="text-xs pl-1">
+                        영문, 숫자, 특수문자(!@$%&*?) 조합 8~15자리
+                      </div>
                     </FormItem>
                   )}
                 />
@@ -139,11 +140,14 @@ export default function Home() {
                   name="confirmPassword"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>비밀번호 확인</FormLabel>
-                      <FormControl>
-                        <Input type={"password"} {...field} />
-                      </FormControl>
                       <FormMessage />
+                      <FormControl>
+                        <Input
+                          placeholder="비밀번호 확인"
+                          type={"password"}
+                          {...field}
+                        />
+                      </FormControl>
                     </FormItem>
                   )}
                 />
