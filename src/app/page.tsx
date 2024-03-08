@@ -77,7 +77,10 @@ export default function Home() {
         duration: 1000,
       });
       return;
+    } else {
+      form.clearErrors("confirmPassword");
     }
+
     alert(JSON.stringify(data, null, 4));
     // toast({
     //   title: "You submitted the following values:",
