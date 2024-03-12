@@ -282,14 +282,14 @@ export default function Signup() {
                       <div className="space-y-1 leading-none">
                         <FormLabel>
                           <Link
-                            href="https://naver.com"
+                            href="https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&ssc=tab.nx.all&query=%EC%9D%B4%EC%9A%A9%EC%95%BD%EA%B4%80&oquery=%EC%95%BD%EA%B4%80%EB%8F%99%EC%9D%98&tqi=iP%2F94dqo1e8ss72G4Whssssss7w-428465"
                             className="font-semibold underline"
                           >
                             이용약관
                           </Link>
                           &nbsp;및{" "}
                           <Link
-                            href="https://naver.com"
+                            href="https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&ssc=tab.nx.all&query=%EA%B0%9C%EC%9D%B8%EC%A0%95%EB%B3%B4+%EC%B2%98%EB%A6%AC%EB%B0%A9%EC%B9%A8&oquery=%EC%9D%B4%EC%9A%A9%EC%95%BD%EA%B4%80&tqi=iP%2F96dqpts0ss7rs2f0ssssssRV-252315"
                             className="font-semibold underline"
                           >
                             개인정보 처리방침
@@ -310,7 +310,7 @@ export default function Signup() {
             </Form>
             <div className="text-base text-center">
               이미 회원이신가요?&nbsp;
-              <Link href="/login" className="text-primaryColor font-extrabold">
+              <Link href="/" className="text-primaryColor font-extrabold">
                 로그인
               </Link>
             </div>
