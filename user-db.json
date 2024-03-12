@@ -1,0 +1,49 @@
+{
+  "user": [
+    {
+      "id": "1",
+      "username": "김길동",
+      "email": "test@test.com",
+      "password": "qqqqqq11!",
+      "confirmPassword": "qqqqqq11!",
+      "sex": "mail",
+      "terms": true
+    },
+    {
+      "id": "6cfc",
+      "username": "혜진",
+      "email": "hyeee513@naver.com",
+      "password": "angks0609*",
+      "confirmPassword": "angks0609*",
+      "sex": "none",
+      "terms": true
+    },
+    {
+      "id": "2d3f",
+      "username": "ㅇㅇ",
+      "email": "3@3.com",
+      "password": "eeee3333!",
+      "confirmPassword": "eeee3333!",
+      "sex": "male",
+      "terms": true
+    },
+    {
+      "id": "bd7e",
+      "username": "사과",
+      "email": "apple@test.com",
+      "password": "angks0609*",
+      "confirmPassword": "angks0609*",
+      "sex": "male",
+      "terms": true
+    },
+    {
+      "id": "68cc",
+      "username": "사과",
+      "email": "apple@test.com",
+      "password": "angks0609*",
+      "confirmPassword": "angks0609*",
+      "sex": "male",
+      "terms": true
+    }
+  ]
+}
