@@ -21,10 +21,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { toast, useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ToastAction } from "@/components/ui/toast";
 
-// zod & react-hook-form & userSchema
+// zod & userSchema & react-hook-form
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -41,8 +42,11 @@ import { LuMail } from "react-icons/lu";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { LuUsers2 } from "react-icons/lu";
-import { ToastAction } from "@/components/ui/toast";
+
 import { cn } from "@/lib/utils";
+
+// axios
+import axios from "axios";
 
 type userType = z.infer<typeof userSchema>;
 
@@ -50,8 +54,6 @@ export default function Signup() {
   const router = useRouter();
 
   const { toast } = useToast();
-
-  //   const [confirmed, setConfirmed] = React.useState<boolean>(false);
 
   const form = useForm<userType>({
     resolver: zodResolver(userSchema),
@@ -63,27 +65,27 @@ export default function Signup() {
       sex: "",
       terms: false,
     },
-    mode: "onChange",
   });
 
-  //   React.useEffect(() => {
-  //     setValue("agree", JSON.stringify(agree)); // 추가
-
-  //   }, [form.watch]);
-
-  const handleSubmit = (data: userType) => {
+  const handleSubmit = async (data: userType) => {
     if (data.terms === true) {
-      //   setConfirmed(true);
-      toast({
-        className: cn(
-          "data-[state=open]:sm:slide-in-from-bottom-full to data-[state=open]:sm:slide-in-from-top-full top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4 duration={3000}"
-        ),
-        title: "🎉 회원가입이 완료되었습니다.",
-        // action: <ToastAction altText="Goto schedule to undo">Undo</ToastAction>,
-      });
-      setTimeout(() => {
-        router.push("/login");
-      }, 1700);
+      try {
+        await axios.post("http://localhost:3001/user", data);
+
+        toast({
+          className: cn(
+            "data-[state=open]:sm:slide-in-from-bottom-full to data-[state=open]:sm:slide-in-from-top-full top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4 duration={3000}"
+          ),
+          title: "🎉 회원가입이 완료되었습니다.",
+          // action: <ToastAction altText="Goto schedule to undo">Undo</ToastAction>,
+        });
+
+        setTimeout(() => {
+          router.push("/");
+        }, 1700);
+      } catch (error) {
+        console.log("데이터 전송 중 오류가 발생했습니다.");
+      }
     } else {
       return;
     }
@@ -138,9 +140,13 @@ export default function Signup() {
                     <FormItem>
                       <FormMessage />
                       <div className="flex items-center">
-                        <FaRegAddressCard size="31" className="mr-4" />
+                        <FaRegAddressCard size="29" className="mr-4" />
                         <FormControl>
-                          <Input placeholder="이름" {...field} />
+                          <Input
+                            placeholder="이름"
+                            autoComplete="off"
+                            {...field}
+                          />
                         </FormControl>
                       </div>
                     </FormItem>
@@ -154,9 +160,13 @@ export default function Signup() {
                     <FormItem>
                       <FormMessage />
                       <div className="flex items-center">
-                        <LuMail size="31" className="mr-4" />
+                        <LuMail size="29" className="mr-4" />
                         <FormControl>
-                          <Input placeholder="이메일" {...field} />
+                          <Input
+                            placeholder="이메일"
+                            autoComplete="off"
+                            {...field}
+                          />
                         </FormControl>
                       </div>
                     </FormItem>
@@ -170,7 +180,7 @@ export default function Signup() {
                     <FormItem>
                       <FormMessage />
                       <div className="flex items-center">
-                        <RiLockPasswordLine size="31" className="mr-4" />
+                        <RiLockPasswordLine size="29" className="mr-4" />
                         <FormControl>
                           {/* 비밀번호 type 설정 필수, input에다가 */}
                           <Input
@@ -194,7 +204,7 @@ export default function Signup() {
                     <FormItem>
                       <FormMessage />{" "}
                       <div className="flex items-center">
-                        <RiLockPasswordFill size="30" className="mr-4" />
+                        <RiLockPasswordFill size="29" className="mr-4" />
                         <FormControl>
                           <Input
                             placeholder="비밀번호 확인"
@@ -215,7 +225,11 @@ export default function Signup() {
                     <FormItem className="space-y-1.5">
                       <FormMessage />
                       <div className="flex items-center">
-                        <LuUsers2 size="31" className="mr-4" />
+                        <LuUsers2
+                          size="29"
+                          // color="var(--primaryColor)"
+                          className="mr-4"
+                        />
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
@@ -288,13 +302,7 @@ export default function Signup() {
                 />
 
                 <CardFooter className="flex justify-center">
-                  <Button
-                    type="submit"
-                    onClick={handleClick}
-                    // variant={confirmed ? "primary" : "default"}
-                    variant="primary"
-                    disabled={form.formState.isSubmitting}
-                  >
+                  <Button type="submit" onClick={handleClick} variant="primary">
                     가입하기
                   </Button>
                 </CardFooter>
